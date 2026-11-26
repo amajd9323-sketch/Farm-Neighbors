@@ -55,12 +55,32 @@ jobs:
           worker = sw.read_text()
           if "farm-neighbors-pwa-v1" not in worker:
               raise SystemExit("Expected service-worker cache version not found.")
-          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v3", 1)
+          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v4", 1)
           if "'./locales/id.json'" not in worker:
               worker = worker.replace("'./locales/en.json'", "'./locales/en.json', './locales/id.json'", 1)
           sw.write_text(worker)
           PY
           node --check site/app.js
+          # Add the independent farm expansion module to the published app.
+          python3 - <<'PY'
+          from pathlib import Path
+          page = Path("site/index.html")
+          html = page.read_text()
+          tag = '<script src="./farm-expansion.js"></script>'
+          if tag not in html:
+              if "</body>" not in html:
+                  raise SystemExit("Cannot inject farm expansion: </body> not found.")
+              html = html.replace("</body>", tag + "\\n</body>", 1)
+          page.write_text(html)
+          sw = Path("site/sw.js")
+          worker = sw.read_text()
+          if "'./locales/id.json'" not in worker:
+              raise SystemExit("Indonesian locale cache entry missing.")
+          if "'./farm-expansion.js'" not in worker:
+              worker = worker.replace("'./locales/id.json'", "'./locales/id.json', './farm-expansion.js'", 1)
+          sw.write_text(worker)
+          PY
+          node --check site/farm-expansion.js
           touch site/.nojekyll
           test -f site/index.html
           test -f site/manifest.webmanifest
