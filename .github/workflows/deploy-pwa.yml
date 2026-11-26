@@ -88,6 +88,7 @@ jobs:
           sw.write_text(worker)
           PY
           node --check site/farm-expansion.js
+          node --check site/farm-world-3d.js
           touch site/.nojekyll
           test -f site/index.html
           test -f site/manifest.webmanifest
