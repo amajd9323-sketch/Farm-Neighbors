@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'FarmNeighbors-Web-MVP.zip'
+      - 'FarmNeighbors_Web_Project/web/**'
       - '.github/workflows/deploy-pwa.yml'
 
 concurrency:
@@ -28,6 +29,8 @@ jobs:
           unzip -q FarmNeighbors-Web-MVP.zip -d extracted
           test -f extracted/FarmNeighbors_Web_Project/web/index.html
           cp -a extracted/FarmNeighbors_Web_Project/web/. site/
+          # Overlay repository-side public config without modifying the source archive.
+          cp -a FarmNeighbors_Web_Project/web/. site/
           touch site/.nojekyll
           test -f site/index.html
           test -f site/manifest.webmanifest
