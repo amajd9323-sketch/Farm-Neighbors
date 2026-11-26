@@ -32,11 +32,17 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Extract PWA
+      - name: Prepare PWA site
         run: |
-          mkdir extracted site
+          rm -rf extracted site
+          mkdir -p extracted site
           unzip -q FarmNeighbors-Web-MVP.zip -d extracted
-          cp -R extracted/FarmNeighbors_Web_Project/web/. site/
+          test -f extracted/FarmNeighbors_Web_Project/web/index.html
+          cp -a extracted/FarmNeighbors_Web_Project/web/. site/
+          test -f site/index.html
+          test -f site/manifest.webmanifest
+          test -f site/sw.js
+          find site -maxdepth 2 -type f -print
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

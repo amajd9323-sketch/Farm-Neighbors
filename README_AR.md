@@ -1,50 +1,32 @@
-# Farm Neighbors — دليل التشغيل والنشر
+# Farm Neighbors — اللعبة ورابط التثبيت
 
-لعبة مزرعة ويب PWA للهواتف Android وiPhone والكمبيوتر.
+**رابط اللعبة:** https://amajd9323-sketch.github.io/Farm-Neighbors/
 
-## ملفات المشروع
+اللعبة تعمل على Android وiPhone والكمبيوتر من المتصفح، ويمكن تثبيتها كتطبيق PWA دون متجر.
 
-- [تحميل حزمة اللعبة](./FarmNeighbors-Web-MVP.zip).
-- [الدليل الإنجليزي](./README.md).
+## تحميل المشروع
 
-## التشغيل المحلي
+[تحميل حزمة اللعبة](./FarmNeighbors-Web-MVP.zip)
 
-فك ضغط ZIP، ثم ادخل إلى مجلد:
+## التثبيت على الهاتف
 
-`FarmNeighbors_Web_Project/web/`
+- iPhone: افتح الرابط في Safari → Share → Add to Home Screen → فعّل Open as Web App.
+- Android: افتح الرابط في Chrome → Install app أو Add to Home screen.
 
-وشغّل:
+## اللعب
 
-```bash
-python -m http.server 8080
-```
+المعاينة المحلية تدعم الزراعة والسقي والنمو والحصاد على جهاز واحد. ليست Multiplayer مشتركة بعد.
 
-افتح `http://localhost:8080`.
-
-## إعداد Supabase
-
+لتفعيل الحسابات السحابية ودعوات الجيران:
 1. أنشئ مشروع Supabase.
-2. نفّذ ملفات SQL داخل `FarmNeighbors_Web_Project/Backend/supabase/migrations/`.
-3. أضف Project URL وPublic anon/publishable key داخل `web/config.js`.
-4. ممنوع وضع Service Role أو Secret Key داخل كود المتصفح.
+2. نفّذ ملفي SQL داخل `FarmNeighbors_Web_Project/Backend/supabase/migrations/`.
+3. ضع Project URL وPublic anon/publishable key داخل `web/config.js`.
+4. لا تضع Service Role أو Secret Key داخل كود المتصفح.
 
-## فتح المستودع للعامة
+## الحالة
 
-المستودع خاص حاليًا. من GitHub افتح:
+هذه MVP مبكرة. حركة اللاعبين اللحظية والدردشة والتجارة المباشرة واختبار هاتفين لم تكتمل بعد. يلزم إعداد Supabase لاستخدام الحسابات والحفظ السحابي.
 
-**Settings → General → Danger Zone → Change visibility → Make public**
+## النشر
 
-ثم فعّل Pages:
-
-**Settings → Pages → Build and deployment → Source: GitHub Actions**
-
-بعد تفعيل Pages، سير العمل الموجود في `.github/workflows/deploy-pwa.yml` ينشر اللعبة تلقائيًا عند تحديث الملفات أو تشغيل Workflow يدويًا.
-
-## التثبيت
-
-- iPhone: افتح رابط HTTPS في Safari → Share → Add to Home Screen → فعّل Open as Web App.
-- Android: افتح رابط HTTPS في Chrome → Install app أو Add to Home screen.
-
-## حالة MVP
-
-نسخة أولية وليست لعبة Multiplayer مكتملة. الزراعة والمعاينة المحلية متاحتان. اللعب السحابي يتطلب Supabase واختبار هاتفين. حركة الشخصيات المشتركة والدردشة والتجارة المباشرة والحيوانات والمصانع والفعاليات لم تكتمل بعد.
+GitHub Actions يستخرج مجلد `web/` من ZIP وينشره تلقائيًا على GitHub Pages عند تحديث الحزمة أو Workflow.

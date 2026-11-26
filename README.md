@@ -1,44 +1,37 @@
 # Farm Neighbors — Mobile Farming PWA
 
-Mobile-first farming game PWA for iPhone, Android and desktop.
+**Live game:** https://amajd9323-sketch.github.io/Farm-Neighbors/
 
-## Project files
+Mobile-first farming PWA for iPhone, Android and desktop. Install from browser; no app-store account required.
 
-- [FarmNeighbors-Web-MVP.zip](./FarmNeighbors-Web-MVP.zip) — complete web MVP + Supabase SQL migrations.
-- [Arabic setup guide](./README_AR.md).
+## Project download
 
-## Run locally
+[Download FarmNeighbors-Web-MVP.zip](./FarmNeighbors-Web-MVP.zip)
 
-Extract the ZIP. From its `FarmNeighbors_Web_Project/web/` folder:
+Arabic guide: [README_AR.md](./README_AR.md)
 
-```bash
-python -m http.server 8080
-```
+## Play
 
-Open `http://localhost:8080`.
+Open the live HTTPS link above. The local preview lets you plant, water, grow and harvest crops on your own device. Local preview is single-device only.
 
-## Online setup
-
-1. Create a Supabase project.
-2. Run SQL migrations in `FarmNeighbors_Web_Project/Backend/supabase/migrations/`.
-3. Add the Supabase Project URL and public anon/publishable key to `web/config.js`.
-4. Never place a service-role or secret key in browser code.
-
-## Publish with GitHub Pages
-
-This repository is private. To make source code public, use GitHub:
-**Settings → General → Danger Zone → Change visibility → Make public**.
-
-Then enable Pages:
-**Settings → Pages → Build and deployment → Source: GitHub Actions**.
-
-After Pages is enabled, the workflow in `.github/workflows/deploy-pwa.yml` deploys the PWA automatically on the next matching push or manual workflow run.
+For shared accounts and neighbor presence, configure Supabase as documented in the ZIP's README.
 
 ## Install
 
-- iPhone: open HTTPS site in Safari → Share → Add to Home Screen → Open as Web App.
-- Android: open HTTPS site in Chrome → Install app / Add to Home screen.
+- iPhone: open in Safari → Share → Add to Home Screen → Open as Web App.
+- Android: open in Chrome → Install app / Add to Home screen.
+
+## Supabase setup
+
+1. Create a Supabase project.
+2. Run both SQL migrations under `FarmNeighbors_Web_Project/Backend/supabase/migrations/`.
+3. Put Project URL and public anon/publishable key into `web/config.js`.
+4. Never put service-role/secret keys in browser code.
 
 ## Current scope
 
-Early MVP, not a finished online multiplayer game. Farming and local preview are available. Supabase auth, account persistence, server-validated economy and neighbor presence require configuration and two-device testing. Real-time shared character movement, chat, direct trading, animals, factories, events and seasons remain future work.
+Early MVP, not a finished online multiplayer title. Local farming is playable. Shared auth, persisted farms, server-validated economy and neighbor presence require Supabase configuration. Real-time character movement, chat, direct trade, two-device acceptance testing and remaining gameplay systems are still outstanding.
+
+## Deployment
+
+GitHub Actions extracts the PWA from the ZIP and publishes the `web/` folder to GitHub Pages whenever the archive or deployment workflow changes.
