@@ -8,29 +8,18 @@ on:
       - 'FarmNeighbors-Web-MVP.zip'
       - '.github/workflows/deploy-pwa.yml'
 
-permissions:
-  contents: read
-
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: write
-      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
 
       - name: Prepare PWA site
         run: |
@@ -39,16 +28,29 @@ jobs:
           unzip -q FarmNeighbors-Web-MVP.zip -d extracted
           test -f extracted/FarmNeighbors_Web_Project/web/index.html
           cp -a extracted/FarmNeighbors_Web_Project/web/. site/
+          touch site/.nojekyll
           test -f site/index.html
           test -f site/manifest.webmanifest
           test -f site/sw.js
           find site -maxdepth 2 -type f -print
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: site
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
