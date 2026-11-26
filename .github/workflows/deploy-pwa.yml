@@ -41,6 +41,11 @@ jobs:
           if old not in source:
               raise SystemExit("Expected UI ID mapping not found; refusing to deploy unpatched app.")
           path.write_text(source.replace(old, new, 1))
+          sw = Path("site/sw.js")
+          worker = sw.read_text()
+          if "farm-neighbors-pwa-v1" not in worker:
+              raise SystemExit("Expected service-worker cache version not found.")
+          sw.write_text(worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v2", 1))
           PY
           node --check site/app.js
           touch site/.nojekyll
