@@ -70,7 +70,7 @@ jobs:
           if tag not in html:
               if "</body>" not in html:
                   raise SystemExit("Cannot inject farm expansion: </body> not found.")
-              html = html.replace("</body>", tag + "\\n</body>", 1)
+              html = html.replace("</body>", tag + "\n</body>", 1)
           page.write_text(html)
           sw = Path("site/sw.js")
           worker = sw.read_text()
