@@ -13,7 +13,7 @@ const t=k=>w[k]||words.en[k]||k;
 const fresh=()=>({coins:500,level:1,xp:0,unlocked:6,seed:{wheat:4,carrot:2,strawberry:0,corn:0},stock:{wheat:0,carrot:0,strawberry:0,corn:0},plots:Array.from({length:24},()=>({crop:'',ready:0}))});
 let s;try{s=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){s=fresh()}
 s.seed=Object.assign(fresh().seed,s.seed||{});s.stock=Object.assign(fresh().stock,s.stock||{});s.plots=Array.from({length:24},(_,i)=>Object.assign({crop:'',ready:0},s.plots?.[i]||{}));
-const save=()=>localStorage.setItem(KEY,JSON.stringify(s));
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(s));window.dispatchEvent(new CustomEvent('fn-farm-updated',{detail:{coins:s.coins}}))};
 const fmt=n=>new Intl.NumberFormat(lang==='ar'?'ar':lang==='id'?'id-ID':'en').format(n);
 const style=document.createElement('style');
 style.textContent=[
@@ -47,5 +47,5 @@ $('fnx-field').onclick=e=>{let b=e.target.closest('[data-plot]');if(!b)return;le
 $('fnx-store').onclick=e=>{let b=e.target.closest('[data-buy]');if(!b)return;let id=b.dataset.buy,c=crops[id],cost=c.seed*5;if(s.coins<cost){toast(t('need'));return}s.coins-=cost;s.seed[id]+=5;save();render();toast(t('buy')+' ×5 '+t(id))};
 $('fnx-expand').onclick=()=>{let cost=400+Math.max(0,s.unlocked-6)*350;if(s.unlocked>=24||s.coins<cost){toast(t('need'));return}s.coins-=cost;s.unlocked++;save();render();toast(t('open')+' 🎉')};
 $('fnx-sell').onclick=()=>{let count=Object.values(s.stock).reduce((a,b)=>a+b,0);if(!count){toast(t('nothing'));return}let total=0;Object.keys(crops).forEach(id=>{total+=s.stock[id]*crops[id].price;s.stock[id]=0});let bonus=count>=20?Math.round(total*.2):count>=10?Math.round(total*.1):0;s.coins+=total+bonus;s.xp+=count*2;while(s.xp>=s.level*100){s.xp-=s.level*100;s.level++}save();render();toast(t('sold')+' +'+fmt(total+bonus)+' 🪙'+(bonus?' · '+t('bonus')+' +'+bonus:''))};
-$('fnx-save').onclick=()=>{save();toast(t('save'))};setInterval(()=>{if(root.classList.contains('open'))render()},1000);window.addEventListener('storage',e=>{if(e.key==='farm-neighbors-language')render()});save();render();
+$('fnx-save').onclick=()=>{save();toast(t('save'))};setInterval(()=>{if(root.classList.contains('open'))render()},1000);window.addEventListener('storage',e=>{if(e.key==='farm-neighbors-language')render()});window.addEventListener('fn-farm-updated',()=>{try{const latest=JSON.parse(localStorage.getItem(KEY)||'{}');if(Number.isFinite(Number(latest.coins)))s.coins=Number(latest.coins);render()}catch(e){}});save();render();
 })();
