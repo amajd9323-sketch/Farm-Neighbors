@@ -31,6 +31,18 @@ jobs:
           cp -a extracted/FarmNeighbors_Web_Project/web/. site/
           # Overlay repository-side public config without modifying the source archive.
           cp -a FarmNeighbors_Web_Project/web/. site/
+          # Fix DOM ID mapping: HTML IDs use kebab-case, while app code uses camelCase.
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("site/app.js")
+          source = path.read_text()
+          old = "].map(id => [id, document.getElementById(id)]));"
+          new = "].map(id => [id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()), document.getElementById(id)]));"
+          if old not in source:
+              raise SystemExit("Expected UI ID mapping not found; refusing to deploy unpatched app.")
+          path.write_text(source.replace(old, new, 1))
+          PY
+          node --check site/app.js
           touch site/.nojekyll
           test -f site/index.html
           test -f site/manifest.webmanifest
