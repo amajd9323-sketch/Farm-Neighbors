@@ -50,17 +50,17 @@
   root.id = 'fn-orders-root';
   const css = document.createElement('style');
   css.textContent = `
-    #fn-orders-launch{position:fixed;z-index:9997;bottom:76px;right:18px;border:0;border-radius:14px;padding:12px 15px;background:#e9b84d;color:#2e2512;font:800 13px system-ui;box-shadow:0 8px 22px #0005;cursor:pointer}
-    #fn-orders-root{display:none;position:fixed;inset:0;z-index:10000;background:#06140edb;backdrop-filter:blur(6px);padding:12px;align-items:center;justify-content:center;font-family:system-ui;color:#f5fff4}
-    #fn-orders-root.open{display:flex}#fn-orders-panel{width:min(620px,100%);max-height:92dvh;overflow:auto;background:linear-gradient(145deg,#183b29,#0b1912);border:1px solid #ffffff24;border-radius:20px;padding:16px;box-shadow:0 20px 70px #0009}
+    #fn-orders-launch{display:none!important}
+    #fn-orders-root{display:block;position:relative;inset:auto;z-index:1;background:transparent;backdrop-filter:none;padding:12px 0;font-family:system-ui;color:#f5fff4}
+    #fn-orders-root.open{display:block}#fn-orders-panel{width:min(1100px,100%);max-height:none;overflow:visible;margin:0 auto;background:linear-gradient(145deg,#183b29,#0b1912);border:1px solid #ffffff24;border-radius:20px;padding:16px;box-shadow:0 12px 32px #0003}
     #fn-orders-head{display:flex;align-items:center;justify-content:space-between;gap:10px}#fn-orders-head h2{margin:0;font-size:21px}#fn-orders-head p{margin:5px 0 14px;color:#b9d6bd;font-size:12px}
-    #fn-orders-close{border:0;border-radius:10px;padding:9px 12px;background:#ffffff20;color:white}
+    #fn-orders-close{display:none}
     .fn-order-card{background:#ffffff0c;border:1px solid #ffffff1c;border-radius:14px;padding:12px;margin:9px 0}
     .fn-order-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.fn-order-goods{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
     .fn-order-chip{background:#ffffff14;border-radius:9px;padding:7px 9px;font-size:12px}.fn-order-meta{font-size:11px;color:#b9d6bd}
     .fn-order-action{width:100%;border:0;border-radius:10px;background:#d8aa45;color:#2b2516;padding:10px;font-weight:800;margin-top:9px;cursor:pointer}.fn-order-action:disabled{opacity:.4}
     #fn-orders-toast{text-align:center;color:#e8d18b;font-size:12px;min-height:20px;margin-top:8px}
-    @media(max-width:480px){#fn-orders-launch{bottom:132px;right:12px}#fn-orders-panel{padding:12px}}
+    @media(max-width:480px){#fn-orders-panel{padding:12px}}
   `;
   document.head.appendChild(css);
   root.innerHTML = '<section id="fn-orders-panel"><header id="fn-orders-head"><div><h2>🏪</h2><p></p></div><button id="fn-orders-close">✕</button></header><div id="fn-orders-list"></div><div id="fn-orders-toast" aria-live="polite"></div></section>';
