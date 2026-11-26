@@ -21,14 +21,15 @@ function cube(x,y,z,w,h,d,color){let x0=x-w/2,x1=x+w/2,y0=y,y1=y+h,z0=z-d/2,z1=z
 function ground(){quad([-12,-.15,-12],[12,-.15,-12],[12,-.15,12],[-12,-.15,12],[.25,.48,.29]);}
 function tree(x,z,s=1){cube(x,-.05,z,.24*s,.9*s,.24*s,[.34,.2,.1]);cube(x,.48*s,z,.95*s,.95*s,.95*s,[.13,.42,.19]);cube(x,.85*s,z,.65*s,.7*s,.65*s,[.18,.52,.22]);}
 function house(x,z){cube(x,0,z,2.1,1.2,1.8,[.76,.65,.45]);cube(x,.9,z,2.35,.65,2.05,[.56,.19,.16]);cube(x,.15,z+.92,.48,.75,.08,[.27,.17,.1]);cube(x-.55,.62,z+.93,.42,.4,.08,[.36,.7,.83]);cube(x+.55,.62,z+.93,.42,.4,.08,[.36,.7,.83]);}
+function dataUnlocked(){try{return JSON.parse(localStorage.getItem('fn-farm-v1')||'{}').unlocked||6}catch(e){return 6}}
 function build(){
 vertices=[];colors=[];ground();
-for(let i=0;i<24;i++){let x=(i%6-2.5)*1.55,z=(Math.floor(i/6)-1.5)*1.55;cube(x,-.02,z,1.35,.12,1.28,[.42,.27,.13]);}
+const unlocked=Math.max(1,Math.min(24,dataUnlocked(),24));for(let i=0;i<unlocked;i++){let x=(i%6-2.5)*1.55,z=(Math.floor(i/6)-1.5)*1.55;cube(x,-.02,z,1.35,.12,1.28,[.42,.27,.13]);}
 tree(-6,-5,1.5);tree(6,-4,1.4);tree(-6,5,1.25);tree(6,5,1.5);tree(4,-7,1.1);house(-4,-5);
 cube(0,-.04,-5,3,.08,.7,[.63,.58,.38]);
 const data=(()=>{try{return JSON.parse(localStorage.getItem('fn-farm-v1')||'{}')}catch(e){return {}}})();
 const plots=data.plots||[];
-for(let i=0;i<Math.min(24,plots.length);i++){let p=plots[i];if(!p.crop)continue;let x=(i%6-2.5)*1.55,z=(Math.floor(i/6)-1.5)*1.55;let ripe=p.ready&&p.ready<=Date.now(),color=p.crop==='wheat'?[.83,.68,.22]:p.crop==='carrot'?[.92,.4,.12]:p.crop==='strawberry'?[.75,.13,.23]:[.3,.68,.2];for(let k=0;k<3;k++)cube(x+(k-1)*.3,.08,z,.12,ripe?.65:.28,.12,color);}
+for(let i=0;i<Math.min(unlocked,plots.length);i++){let p=plots[i];if(!p.crop)continue;let x=(i%6-2.5)*1.55,z=(Math.floor(i/6)-1.5)*1.55;let ripe=p.ready&&p.ready<=Date.now(),color=p.crop==='wheat'?[.83,.68,.22]:p.crop==='carrot'?[.92,.4,.12]:p.crop==='strawberry'?[.75,.13,.23]:[.3,.68,.2];for(let k=0;k<3;k++)cube(x+(k-1)*.3,.08,z,.12,ripe?.65:.28,.12,color);}
 }
 build();
 let yaw=.7,pitch=.75,dist=17,drag=false,lx=0,ly=0;
