@@ -55,7 +55,7 @@ jobs:
           worker = sw.read_text()
           if "farm-neighbors-pwa-v1" not in worker:
               raise SystemExit("Expected service-worker cache version not found.")
-          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v5", 1)
+          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v6", 1)
           if "'./locales/id.json'" not in worker:
               worker = worker.replace("'./locales/en.json'", "'./locales/en.json', './locales/id.json'", 1)
           sw.write_text(worker)
