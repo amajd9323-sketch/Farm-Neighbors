@@ -55,7 +55,7 @@ jobs:
           worker = sw.read_text()
           if "farm-neighbors-pwa-v1" not in worker:
               raise SystemExit("Expected service-worker cache version not found.")
-          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v7", 1)
+          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v8", 1)
           if "'./locales/id.json'" not in worker:
               worker = worker.replace("'./locales/en.json'", "'./locales/en.json', './locales/id.json'", 1)
           sw.write_text(worker)
@@ -67,11 +67,6 @@ jobs:
           page = Path("site/index.html")
           html = page.read_text()
           tag = '<script src="./farm-expansion.js"></script>'
-          world_tag = '<script src="./farm-world-3d.js"></script>'
-          if world_tag not in html:
-              if "</body>" not in html:
-                  raise SystemExit("Cannot inject 3D world: </body> not found.")
-              html = html.replace("</body>", world_tag + "\n</body>", 1)
           if tag not in html:
               if "</body>" not in html:
                   raise SystemExit("Cannot inject farm expansion: </body> not found.")
@@ -83,8 +78,7 @@ jobs:
               raise SystemExit("Indonesian locale cache entry missing.")
           if "'./farm-expansion.js'" not in worker:
               worker = worker.replace("'./locales/id.json'", "'./locales/id.json', './farm-expansion.js'", 1)
-          if "'./farm-world-3d.js'" not in worker:
-              worker = worker.replace("'./farm-expansion.js'", "'./farm-expansion.js', './farm-world-3d.js'", 1)
+          worker = worker.replace(", './farm-world-3d.js'", "")
           sw.write_text(worker)
           PY
           node --check site/farm-expansion.js
@@ -102,11 +96,10 @@ jobs:
           sw = Path("site/sw.js")
           worker = sw.read_text()
           if "'./farm-animals.js'" not in worker:
-              worker = worker.replace("'./farm-world-3d.js'", "'./farm-world-3d.js', './farm-animals.js'", 1)
+              worker = worker.replace("'./farm-expansion.js'", "'./farm-expansion.js', './farm-animals.js'", 1)
           sw.write_text(worker)
           PY
           node --check site/farm-animals.js
-          node --check site/farm-world-3d.js
           touch site/.nojekyll
           test -f site/index.html
           test -f site/manifest.webmanifest
