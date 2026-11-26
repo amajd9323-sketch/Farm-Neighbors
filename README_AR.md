@@ -1,48 +1,47 @@
-# Farm Neighbors — دليل التشغيل بالعربية
+# Farm Neighbors — دليل التشغيل
 
-لعبة مزرعة اجتماعية مبنية على Unity 6.3. هذه الحزمة هي MVP تأسيسي، وليست إصدارًا تجاريًا مكتملًا.
+هذه نسخة ويب PWA تعمل على Android وiPhone والكمبيوتر، ويمكن تثبيتها على الشاشة الرئيسية.
 
-## المتطلبات
-- Unity 6.3 عبر Unity Hub.
-- Android Build Support لبناء APK.
-- مشروع Supabase لاستخدام الحسابات والحفظ السحابي.
+## تشغيل المشروع
 
-## التشغيل
-1. نزّل `FarmNeighbors_MVP.zip` من المستودع وفك الضغط.
-2. افتح مجلد المشروع المستخرج عبر Unity Hub.
-3. من قائمة Unity اختر **Farm Neighbors → Build MVP Scene**.
-4. اضغط Play لتشغيل المزرعة داخل المحرر.
-
-## ربط Supabase
-1. أنشئ مشروع Supabase.
-2. نفّذ ملف SQL الموجود داخل `Backend/supabase/migrations` في SQL Editor.
-3. افتح إعدادات المشروع في Unity وأدخل Project URL وPublishable/anon key فقط.
-4. لا تضع Service Role أو Secret key داخل تطبيق الهاتف.
-
-## بناء Android
-1. ثبّت Android Build Support من Unity Hub.
-2. من Unity افتح File → Build Profiles.
-3. اختر Android، ثم Switch Platform.
-4. أضف المشهد الذي أنشأه Builder إلى قائمة المشاهد.
-5. اضغط Build لإنتاج APK.
-
-## الموجود حاليًا
-- أرض مزرعة 4×4.
-- شراء بذور وزراعة وسقي ونمو وحصاد.
-- أربعة محاصيل أساسية.
-- Coins وXP ومستويات ومخزن وبيع وشراء.
-- حفظ محلي.
-- أساس ربط Supabase Auth وPostgreSQL.
-- SQL للتحقق من العمليات الاقتصادية في الخادم.
-- أساس دعوات الجيران.
-- ملفات ترجمة عربية وإنجليزية.
-
-## ما لم يكتمل بعد
-المزامنة اللحظية لحركة الشخصيات، الدردشة داخل اللعبة، التجارة المباشرة المكتملة، واختبار هاتفين حقيقيين. يلزم فتح المشروع في Unity وإجراء Compile وبناء Android على جهاز يحتوي وحدات البناء المطلوبة.
-
-## الفحص الساكن
-بعد فك الضغط شغّل:
+1. نزّل [FarmNeighbors-Web-MVP.zip](./FarmNeighbors-Web-MVP.zip).
+2. فك ضغط الملف.
+3. ادخل مجلد `web`.
+4. شغّل خادمًا محليًا:
 
 ```bash
-python tools/validate_project.py
+python -m http.server 8080
 ```
+
+5. افتح `http://localhost:8080`.
+
+## اللعب على الهاتفين
+
+- Android: افتح رابط HTTPS في Chrome ثم اختر Install app.
+- iPhone: افتح رابط HTTPS في Safari ثم Share → Add to Home Screen → فعّل Open as Web App → Add.
+
+## تشغيل اللعب السحابي
+
+1. أنشئ مشروع Supabase.
+2. نفّذ ملفي SQL داخل `Backend/supabase/migrations`.
+3. ضع Project URL وPublic anon/publishable key داخل `web/config.js`.
+4. انشر محتويات مجلد `web` على استضافة HTTPS.
+5. أنشئ حسابين واختبر دعوة الجيران من هاتفين.
+
+لا تضع service_role أو secret key داخل ملفات الويب.
+
+## الموجود في MVP
+
+- مزرعة 4×4.
+- زراعة وسقي ونمو وحصاد 4 محاصيل.
+- عملات وبذور ومخزن وبيع وXP ومستويات.
+- العربية RTL والإنجليزية LTR.
+- PWA وService Worker وأيقونات تثبيت.
+- وضع معاينة محلي.
+- أساس Supabase Auth وPostgreSQL RPC ودعوات الجيران والحضور.
+
+## ما لم يكتمل
+
+المعاينة المحلية لا تدعم اللعب المشترك. اللعب السحابي يحتاج إعداد Supabase واختبار هاتفين. حركة الشخصيات المشتركة لحظيًا والدردشة والتجارة المباشرة والحيوانات والمصانع والفعاليات لم تكتمل بعد.
+
+المستودع حاليًا Private. لا تغيّر خصوصيته قبل تقرير ما إذا كنت تريد نشر الكود للعامة. GitHub Pages قد يتطلب خطة مدفوعة للمستودعات الخاصة؛ يمكن استخدام استضافة HTTPS أخرى دون جعل الكود عامًا.

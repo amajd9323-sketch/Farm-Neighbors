@@ -1,55 +1,51 @@
-# Farm Neighbors
+# Farm Neighbors — Mobile Farming PWA
 
-Mobile farming game MVP built for Unity 6.3.
+**Farm Neighbors** is a mobile-first Progressive Web App for Android, iPhone and desktop.
 
-## Download
+## Download and run
 
-Download [FarmNeighbors_MVP.zip](./FarmNeighbors_MVP.zip), then extract it and open the extracted folder with Unity Hub.
-
-Arabic guide: [README_AR.md](./README_AR.md)
-
-## Current MVP
-
-- 4x4 farm grid
-- Planting, watering, growth and harvesting
-- Four starter crops
-- Coins, XP, levels, inventory, buying and selling
-- Local save support
-- Supabase Auth and PostgreSQL backend integration
-- Server-validated economy functions
-- Neighbor invitation foundation
-- Arabic and English localization files
-- Unity editor scene/bootstrap builder
-- Static validation workflow
-
-## Requirements
-
-- Unity 6.3 (Unity 6.3 LTS recommended)
-- Android Build Support for Android builds
-- Supabase project for cloud authentication and persistence
-
-## Quick start
-
-1. Extract `FarmNeighbors_MVP.zip`.
-2. Open the extracted folder from Unity Hub.
-3. Run **Farm Neighbors → Build MVP Scene** from Unity menu.
-4. Press Play.
-5. For cloud features, apply the SQL migration in `Backend/supabase/migrations` and configure the Supabase URL and publishable key in the Unity project.
-
-See [README_AR.md](./README_AR.md) for Arabic setup steps.
-
-## Important status
-
-This is an MVP foundation, not a finished commercial multiplayer game. Full real-time character synchronization, in-game chat, direct player trading, and two-device acceptance testing remain future implementation tasks. Unity compilation and Android/iOS builds must be run in Unity Editor on a machine with the relevant platform modules installed.
-
-Do not commit Supabase secret/service-role keys. Only use the project's public publishable/anon key in client configuration, with database RLS and server-side validation enabled.
-
-## Validation
-
-Run:
+1. Download [FarmNeighbors-Web-MVP.zip](./FarmNeighbors-Web-MVP.zip).
+2. Extract the ZIP.
+3. Open the extracted project folder in your editor.
+4. Start a local HTTP server from the `web/` directory:
 
 ```bash
-python tools/validate_project.py
+python -m http.server 8080
 ```
 
-The GitHub Actions workflow runs the static project checks on pushes and pull requests.
+5. Open `http://localhost:8080`.
+
+Arabic instructions: [README_AR.md](./README_AR.md).
+
+## Features in this MVP
+
+- Responsive touch-first 4x4 farm.
+- Plant, water, grow and harvest wheat, carrots, tomatoes and corn.
+- Coins, seeds, inventory, sales, XP and levels.
+- Arabic RTL and English LTR localization.
+- Installable PWA manifest, service worker and app icons.
+- Local preview mode saved on the current device.
+- Supabase Auth, PostgreSQL RPC economy, friend invites and neighbor presence when configured.
+
+## Online setup
+
+1. Create a Supabase project.
+2. Run both SQL migrations in `Backend/supabase/migrations/`.
+3. Set the Supabase Project URL and public anon/publishable key in `web/config.js`.
+4. Host the contents of `web/` over HTTPS.
+5. Test accounts and neighbor invites on two real devices.
+
+Never put a Supabase service-role or secret key in browser code.
+
+## Install on phones
+
+- **iPhone:** Open the HTTPS URL in Safari → Share → Add to Home Screen → enable Open as Web App → Add.
+- **Android:** Open the HTTPS URL in Chrome → Install app (or browser menu → Add to Home screen).
+
+## Current scope
+
+This is an early playable MVP, not a finished online multiplayer title. Preview mode is single-device only. Online auth, per-player persistence, neighbor invites and presence depend on Supabase setup. Two-device acceptance testing, shared live character movement, chat, direct trading, animals, crafting, fishing, mining, seasons and push notifications remain outstanding.
+
+## GitHub Pages
+
+A deployment workflow is included. It extracts the committed ZIP and publishes the PWA. GitHub Pages must be available and enabled for this repository. The repository is currently private; public hosting may require changing repository visibility or using another HTTPS host. Repository visibility is not changed automatically.
