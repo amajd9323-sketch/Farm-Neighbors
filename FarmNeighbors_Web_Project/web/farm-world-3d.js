@@ -89,4 +89,5 @@ canvas.addEventListener('pointermove',e=>{if(!drag)return;if(Math.hypot(e.client
 canvas.addEventListener('pointerup',()=>drag=false);canvas.addEventListener('pointercancel',()=>drag=false);
 canvas.addEventListener('wheel',e=>{dist=Math.max(9,Math.min(28,dist+e.deltaY*.018));e.preventDefault();},{passive:false});
 window.addEventListener('storage',e=>{if(e.key==='fn-farm-v1')build();});
+setInterval(()=>{if(shell.classList.contains('on'))build();},450);
 })();
