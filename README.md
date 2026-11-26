@@ -1,51 +1,44 @@
 # Farm Neighbors — Mobile Farming PWA
 
-**Farm Neighbors** is a mobile-first Progressive Web App for Android, iPhone and desktop.
+Mobile-first farming game PWA for iPhone, Android and desktop.
 
-## Download and run
+## Project files
 
-1. Download [FarmNeighbors-Web-MVP.zip](./FarmNeighbors-Web-MVP.zip).
-2. Extract the ZIP.
-3. Open the extracted project folder in your editor.
-4. Start a local HTTP server from the `web/` directory:
+- [FarmNeighbors-Web-MVP.zip](./FarmNeighbors-Web-MVP.zip) — complete web MVP + Supabase SQL migrations.
+- [Arabic setup guide](./README_AR.md).
+
+## Run locally
+
+Extract the ZIP. From its `FarmNeighbors_Web_Project/web/` folder:
 
 ```bash
 python -m http.server 8080
 ```
 
-5. Open `http://localhost:8080`.
-
-Arabic instructions: [README_AR.md](./README_AR.md).
-
-## Features in this MVP
-
-- Responsive touch-first 4x4 farm.
-- Plant, water, grow and harvest wheat, carrots, tomatoes and corn.
-- Coins, seeds, inventory, sales, XP and levels.
-- Arabic RTL and English LTR localization.
-- Installable PWA manifest, service worker and app icons.
-- Local preview mode saved on the current device.
-- Supabase Auth, PostgreSQL RPC economy, friend invites and neighbor presence when configured.
+Open `http://localhost:8080`.
 
 ## Online setup
 
 1. Create a Supabase project.
-2. Run both SQL migrations in `Backend/supabase/migrations/`.
-3. Set the Supabase Project URL and public anon/publishable key in `web/config.js`.
-4. Host the contents of `web/` over HTTPS.
-5. Test accounts and neighbor invites on two real devices.
+2. Run SQL migrations in `FarmNeighbors_Web_Project/Backend/supabase/migrations/`.
+3. Add the Supabase Project URL and public anon/publishable key to `web/config.js`.
+4. Never place a service-role or secret key in browser code.
 
-Never put a Supabase service-role or secret key in browser code.
+## Publish with GitHub Pages
 
-## Install on phones
+This repository is private. To make source code public, use GitHub:
+**Settings → General → Danger Zone → Change visibility → Make public**.
 
-- **iPhone:** Open the HTTPS URL in Safari → Share → Add to Home Screen → enable Open as Web App → Add.
-- **Android:** Open the HTTPS URL in Chrome → Install app (or browser menu → Add to Home screen).
+Then enable Pages:
+**Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+After Pages is enabled, the workflow in `.github/workflows/deploy-pwa.yml` deploys the PWA automatically on the next matching push or manual workflow run.
+
+## Install
+
+- iPhone: open HTTPS site in Safari → Share → Add to Home Screen → Open as Web App.
+- Android: open HTTPS site in Chrome → Install app / Add to Home screen.
 
 ## Current scope
 
-This is an early playable MVP, not a finished online multiplayer title. Preview mode is single-device only. Online auth, per-player persistence, neighbor invites and presence depend on Supabase setup. Two-device acceptance testing, shared live character movement, chat, direct trading, animals, crafting, fishing, mining, seasons and push notifications remain outstanding.
-
-## GitHub Pages
-
-A deployment workflow is included. It extracts the committed ZIP and publishes the PWA. GitHub Pages must be available and enabled for this repository. The repository is currently private; public hosting may require changing repository visibility or using another HTTPS host. Repository visibility is not changed automatically.
+Early MVP, not a finished online multiplayer game. Farming and local preview are available. Supabase auth, account persistence, server-validated economy and neighbor presence require configuration and two-device testing. Real-time shared character movement, chat, direct trading, animals, factories, events and seasons remain future work.

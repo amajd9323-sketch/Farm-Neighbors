@@ -1,47 +1,50 @@
-# Farm Neighbors — دليل التشغيل
+# Farm Neighbors — دليل التشغيل والنشر
 
-هذه نسخة ويب PWA تعمل على Android وiPhone والكمبيوتر، ويمكن تثبيتها على الشاشة الرئيسية.
+لعبة مزرعة ويب PWA للهواتف Android وiPhone والكمبيوتر.
 
-## تشغيل المشروع
+## ملفات المشروع
 
-1. نزّل [FarmNeighbors-Web-MVP.zip](./FarmNeighbors-Web-MVP.zip).
-2. فك ضغط الملف.
-3. ادخل مجلد `web`.
-4. شغّل خادمًا محليًا:
+- [تحميل حزمة اللعبة](./FarmNeighbors-Web-MVP.zip).
+- [الدليل الإنجليزي](./README.md).
+
+## التشغيل المحلي
+
+فك ضغط ZIP، ثم ادخل إلى مجلد:
+
+`FarmNeighbors_Web_Project/web/`
+
+وشغّل:
 
 ```bash
 python -m http.server 8080
 ```
 
-5. افتح `http://localhost:8080`.
+افتح `http://localhost:8080`.
 
-## اللعب على الهاتفين
-
-- Android: افتح رابط HTTPS في Chrome ثم اختر Install app.
-- iPhone: افتح رابط HTTPS في Safari ثم Share → Add to Home Screen → فعّل Open as Web App → Add.
-
-## تشغيل اللعب السحابي
+## إعداد Supabase
 
 1. أنشئ مشروع Supabase.
-2. نفّذ ملفي SQL داخل `Backend/supabase/migrations`.
-3. ضع Project URL وPublic anon/publishable key داخل `web/config.js`.
-4. انشر محتويات مجلد `web` على استضافة HTTPS.
-5. أنشئ حسابين واختبر دعوة الجيران من هاتفين.
+2. نفّذ ملفات SQL داخل `FarmNeighbors_Web_Project/Backend/supabase/migrations/`.
+3. أضف Project URL وPublic anon/publishable key داخل `web/config.js`.
+4. ممنوع وضع Service Role أو Secret Key داخل كود المتصفح.
 
-لا تضع service_role أو secret key داخل ملفات الويب.
+## فتح المستودع للعامة
 
-## الموجود في MVP
+المستودع خاص حاليًا. من GitHub افتح:
 
-- مزرعة 4×4.
-- زراعة وسقي ونمو وحصاد 4 محاصيل.
-- عملات وبذور ومخزن وبيع وXP ومستويات.
-- العربية RTL والإنجليزية LTR.
-- PWA وService Worker وأيقونات تثبيت.
-- وضع معاينة محلي.
-- أساس Supabase Auth وPostgreSQL RPC ودعوات الجيران والحضور.
+**Settings → General → Danger Zone → Change visibility → Make public**
 
-## ما لم يكتمل
+ثم فعّل Pages:
 
-المعاينة المحلية لا تدعم اللعب المشترك. اللعب السحابي يحتاج إعداد Supabase واختبار هاتفين. حركة الشخصيات المشتركة لحظيًا والدردشة والتجارة المباشرة والحيوانات والمصانع والفعاليات لم تكتمل بعد.
+**Settings → Pages → Build and deployment → Source: GitHub Actions**
 
-المستودع حاليًا Private. لا تغيّر خصوصيته قبل تقرير ما إذا كنت تريد نشر الكود للعامة. GitHub Pages قد يتطلب خطة مدفوعة للمستودعات الخاصة؛ يمكن استخدام استضافة HTTPS أخرى دون جعل الكود عامًا.
+بعد تفعيل Pages، سير العمل الموجود في `.github/workflows/deploy-pwa.yml` ينشر اللعبة تلقائيًا عند تحديث الملفات أو تشغيل Workflow يدويًا.
+
+## التثبيت
+
+- iPhone: افتح رابط HTTPS في Safari → Share → Add to Home Screen → فعّل Open as Web App.
+- Android: افتح رابط HTTPS في Chrome → Install app أو Add to Home screen.
+
+## حالة MVP
+
+نسخة أولية وليست لعبة Multiplayer مكتملة. الزراعة والمعاينة المحلية متاحتان. اللعب السحابي يتطلب Supabase واختبار هاتفين. حركة الشخصيات المشتركة والدردشة والتجارة المباشرة والحيوانات والمصانع والفعاليات لم تكتمل بعد.
