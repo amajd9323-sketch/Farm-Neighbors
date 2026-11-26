@@ -40,12 +40,25 @@ jobs:
           new = "].map(id => [id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()), document.getElementById(id)]));"
           if old not in source:
               raise SystemExit("Expected UI ID mapping not found; refusing to deploy unpatched app.")
-          path.write_text(source.replace(old, new, 1))
+          source = source.replace(old, new, 1)
+          old_locale = "let locale = localStorage.getItem('farm-neighbors-language') || ((navigator.language || 'en').toLowerCase().startsWith('ar') ? 'ar' : 'en');"
+          new_locale = "let locale = localStorage.getItem('farm-neighbors-language') || ((navigator.language || 'en').toLowerCase().startsWith('ar') ? 'ar' : ((navigator.language || 'en').toLowerCase().startsWith('id') ? 'id' : 'en'));"
+          if old_locale not in source:
+              raise SystemExit("Expected locale initialization not found.")
+          source = source.replace(old_locale, new_locale, 1)
+          source = source.replace("locale = nextLocale === 'ar' ? 'ar' : 'en';", "locale = ['ar', 'en', 'id'].includes(nextLocale) ? nextLocale : 'en';", 1)
+          source = source.replace("new Intl.NumberFormat(locale === 'ar' ? 'ar' : 'en')", "new Intl.NumberFormat(locale === 'ar' ? 'ar' : (locale === 'id' ? 'id-ID' : 'en'))", 1)
+          source = source.replace("ui.langToggle.textContent = locale === 'ar' ? 'EN' : 'ع';", "ui.langToggle.textContent = locale === 'ar' ? 'EN' : (locale === 'en' ? 'ID' : 'ع');", 1)
+          source = source.replace("ui.langToggle.addEventListener('click', () => setLocale(locale === 'ar' ? 'en' : 'ar'));", "ui.langToggle.addEventListener('click', () => setLocale(({ ar: 'en', en: 'id', id: 'ar' })[locale] || 'en'));", 1)
+          path.write_text(source)
           sw = Path("site/sw.js")
           worker = sw.read_text()
           if "farm-neighbors-pwa-v1" not in worker:
               raise SystemExit("Expected service-worker cache version not found.")
-          sw.write_text(worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v2", 1))
+          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v3", 1)
+          if "'./locales/id.json'" not in worker:
+              worker = worker.replace("'./locales/en.json'", "'./locales/en.json', './locales/id.json'", 1)
+          sw.write_text(worker)
           PY
           node --check site/app.js
           touch site/.nojekyll
