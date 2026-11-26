@@ -78,7 +78,8 @@ jobs:
               raise SystemExit("Indonesian locale cache entry missing.")
           if "'./farm-expansion.js'" not in worker:
               worker = worker.replace("'./locales/id.json'", "'./locales/id.json', './farm-expansion.js'", 1)
-          worker = worker.replace(", './farm-world-3d.js'", "")
+          worker = worker.replace(", './farm-world-3d.js'", "").replace("'./farm-world-3d.js', ", "").replace("'./farm-world-3d.js'", "")
+          html = html.replace('<script src="./farm-world-3d.js"></script>', '')
           sw.write_text(worker)
           PY
           node --check site/farm-expansion.js
