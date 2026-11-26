@@ -14,10 +14,11 @@ const fresh=()=>({level:1,capacity:4,chickens:[],cows:[],feed:5,eggs:0,milk:0});
 let state;try{state=Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){state=fresh();}
 state.chickens=Array.isArray(state.chickens)?state.chickens:[];state.cows=Array.isArray(state.cows)?state.cows:[];
 const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
+const notifyFarm=()=>window.dispatchEvent(new CustomEvent('fn-farm-updated',{detail:{coins:coins()}}));
 const farm=()=>{try{return JSON.parse(localStorage.getItem(FARM)||'{}');}catch(e){return {};}};
 const coins=()=>Number(farm().coins||0);
-const spend=n=>{const f=farm();if(Number(f.coins||0)<n)return false;f.coins=Number(f.coins)-n;localStorage.setItem(FARM,JSON.stringify(f));return true;};
-const earn=n=>{const f=farm();f.coins=Number(f.coins||0)+n;localStorage.setItem(FARM,JSON.stringify(f));};
+const spend=n=>{const f=farm();if(Number(f.coins||0)<n)return false;f.coins=Number(f.coins)-n;localStorage.setItem(FARM,JSON.stringify(f));notifyFarm();return true;};
+const earn=n=>{const f=farm();f.coins=Number(f.coins||0)+n;localStorage.setItem(FARM,JSON.stringify(f));notifyFarm();};
 const total=()=>state.chickens.length+state.cows.length, now=()=>Date.now();
 const notice=m=>{const e=document.querySelector('#fn-animal-notice');if(!e)return;e.textContent=m;e.classList.add('show');clearTimeout(e._timer);e._timer=setTimeout(()=>e.classList.remove('show'),2200);};
 function buy(type){if(total()>=state.capacity)return notice(t('full'));if(!spend(type==='chicken'?120:500))return notice(t('noCoins'));state[type==='chicken'?'chickens':'cows'].push({readyAt:0});save();notice(t('bought'));render();}
@@ -39,5 +40,6 @@ const style=document.createElement('style');style.textContent=css;document.head.
 window.FNAnimals={render,refresh:mount};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 window.addEventListener('storage',e=>{if(e.key===FARM)render();});
+window.addEventListener('fn-farm-updated',render);
 setInterval(()=>{if(document.querySelector('#fn-animal-panel'))render();},5000);
 })();
