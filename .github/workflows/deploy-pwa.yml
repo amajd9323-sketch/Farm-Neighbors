@@ -70,7 +70,7 @@ jobs:
           if tag not in html:
               if "</body>" not in html:
                   raise SystemExit("Cannot inject farm expansion: </body> not found.")
-              html = html.replace("</body>", tag + "\n</body>", 1)
+              html = html.replace("</body>", tag + "\\n</body>", 1)
           page.write_text(html)
           sw = Path("site/sw.js")
           worker = sw.read_text()
@@ -92,7 +92,7 @@ jobs:
           if tag not in html:
               if "</body>" not in html:
                   raise SystemExit("Cannot inject livestock module: </body> not found.")
-              html = html.replace("</body>", tag + "\n</body>", 1)
+              html = html.replace("</body>", tag + "\\n</body>", 1)
           page.write_text(html)
           sw = Path("site/sw.js")
           worker = sw.read_text()
@@ -101,6 +101,25 @@ jobs:
           sw.write_text(worker)
           PY
           node --check site/farm-animals.js
+          # Add customer contracts and produce deliveries (stage 5).
+          python3 - <<'PY'
+          from pathlib import Path
+          page = Path("site/index.html")
+          html = page.read_text()
+          tag = '<script src="./farm-orders.js"></script>'
+          if tag not in html:
+              if "</body>" not in html:
+                  raise SystemExit("Cannot inject order board: </body> not found.")
+              html = html.replace("</body>", tag + "\\n</body>", 1)
+          page.write_text(html)
+          sw = Path("site/sw.js")
+          worker = sw.read_text()
+          if "'./farm-orders.js'" not in worker:
+              worker = worker.replace("'./farm-animals.js'", "'./farm-animals.js', './farm-orders.js'", 1)
+          sw.write_text(worker)
+          PY
+          node --check site/farm-animals.js
+          node --check site/farm-orders.js
           touch site/.nojekyll
           test -f site/index.html
           test -f site/manifest.webmanifest
