@@ -55,7 +55,7 @@ jobs:
           worker = sw.read_text()
           if "farm-neighbors-pwa-v1" not in worker:
               raise SystemExit("Expected service-worker cache version not found.")
-          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v6", 1)
+          worker = worker.replace("farm-neighbors-pwa-v1", "farm-neighbors-pwa-v7", 1)
           if "'./locales/id.json'" not in worker:
               worker = worker.replace("'./locales/en.json'", "'./locales/en.json', './locales/id.json'", 1)
           sw.write_text(worker)
@@ -88,6 +88,24 @@ jobs:
           sw.write_text(worker)
           PY
           node --check site/farm-expansion.js
+          # Add barn and livestock gameplay (stage 4).
+          python3 - <<'PY'
+          from pathlib import Path
+          page = Path("site/index.html")
+          html = page.read_text()
+          tag = '<script src="./farm-animals.js"></script>'
+          if tag not in html:
+              if "</body>" not in html:
+                  raise SystemExit("Cannot inject livestock module: </body> not found.")
+              html = html.replace("</body>", tag + "\\n</body>", 1)
+          page.write_text(html)
+          sw = Path("site/sw.js")
+          worker = sw.read_text()
+          if "'./farm-animals.js'" not in worker:
+              worker = worker.replace("'./farm-world-3d.js'", "'./farm-world-3d.js', './farm-animals.js'", 1)
+          sw.write_text(worker)
+          PY
+          node --check site/farm-animals.js
           node --check site/farm-world-3d.js
           touch site/.nojekyll
           test -f site/index.html
